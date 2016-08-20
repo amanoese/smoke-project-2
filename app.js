@@ -26,19 +26,8 @@ Cylon.robot({
     var fileName = `./outfile/outfile_${moment().format('MM-DD_hh:mm')}.csv`;
     fs.writeFile(fileName,'date,temperature,outvalue\n');
 
-    var tapModule = {
-      size       : 0,
-      iteration  : 0,
-      init() {
-        every(200, function() {
-          tapModule.iteration = (tapModule.iteration+1) % 10;
-          my.pin.digitalWrite(+!!(tapModule.iteration < tapModule.size));
-        });
-      }
-
-    };
     ctr.setTarget(63);
-    tapModule.init();
+    tapModule.constructor(my.pin);
     every((2).seconds(), function() {
       my.bmp180.getAltitude(1, null, function(err, val) {
         if (err) {
@@ -54,4 +43,16 @@ Cylon.robot({
     });
   }
 }).start();
+
+var tapModule = {
+  size       : 0,
+  iteration  : 0,
+  constructor(pin) {
+    this.pin = pin;
+    every(200, () => {
+      this.iteration = (this.iteration+1) % 10;
+      pin.digitalWrite(+!!(this.iteration < this.size));
+    });
+  }
+};
 
