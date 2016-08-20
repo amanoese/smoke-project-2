@@ -9,23 +9,30 @@ Cylon.robot({
 
   devices: {
     bmp180: { driver: 'bmp180' },
-    led: { driver: 'led', pin: 15 }
+    pin: { driver: 'direct-pin', pin: 8 }
   },
 
   work: function(my) {
     var fileName = `./outfile/outfile-${Date.now()}.csv`;
     fs.writeFile(fileName,'temperature\n');
+
+    var size = 0;
+    var iteration = 0;
+    every(200, function() {
+       iteration = (iteration+1) % 10;
+       my.pin.digitalWrite(+!!(iteration < size));
+    });
     every((2).seconds(), function() {
       my.bmp180.getAltitude(1, null, function(err, val) {
         if (err) {
           console.log(err);
           return;
         }
-        var ledBrite = parseInt(val.temp.fromScale(30,33).toScale(0, 255));
-        my.led.brightness(ledBrite);
-        console.log("\tledBrite: " + ledBrite,"\tTemperature: " + val.temp + " C","\tPressure: " + val.press + " Pa", "\tAltitude: " + val.alt + " m");
+        size = parseInt(val.temp.fromScale(30,33).toScale(0,10));
+        console.log("\tTemperature: " + val.temp + "\titeration:" + size);
         fs.appendFile(fileName,val.temp + '\n');
       });
     });
   }
 }).start();
+
