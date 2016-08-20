@@ -3,6 +3,15 @@ var json2csv = require('json2csv');
 var moment = require('moment');
 var fs = require('fs');
 
+var Controller = require('node-pid-controller');
+var ctr = new Controller({
+  k_p: 0.70,
+  k_i: 0.07,
+  k_d: 0.00,
+  dt: 2,
+  i_max : 10
+});
+
 Cylon.robot({
   connections: {
     raspi: { adaptor: 'raspi' }
@@ -22,12 +31,13 @@ Cylon.robot({
       iteration  : 0,
       init() {
         every(200, function() {
-          this.iteration = (this.iteration+1) % 10;
-          my.pin.digitalWrite(+!!(this.iteration < this.size));
+          tapModule.iteration = (tapModule.iteration+1) % 10;
+          my.pin.digitalWrite(+!!(tapModule.iteration < tapModule.size));
         });
       }
 
     };
+    ctr.setTarget(63);
     tapModule.init();
     every((2).seconds(), function() {
       my.bmp180.getAltitude(1, null, function(err, val) {
@@ -35,8 +45,9 @@ Cylon.robot({
           console.log(err);
           return;
         }
-        tapModule.size = parseInt(val.temp.fromScale(30,33).toScale(0,10));
-        var data = `${moment().format('hh:mm:ss')},${val.temp},${tapModule.size}\n`;
+        var temp = val.temp.toFixed(2);
+        tapModule.size = ctr.update(temp).toFixed(2);
+        var data = `${moment().format('hh:mm:ss')},${temp},${tapModule.size}\n`;
         process.stdout.write(data);
         fs.appendFile(fileName,data);
       });
