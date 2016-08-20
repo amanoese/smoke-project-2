@@ -16,20 +16,26 @@ Cylon.robot({
     var fileName = `./outfile/outfile-${Date.now()}.csv`;
     fs.writeFile(fileName,'temperature\n');
 
-    var size = 0;
-    var iteration = 0;
-    every(200, function() {
-       iteration = (iteration+1) % 10;
-       my.pin.digitalWrite(+!!(iteration < size));
-    });
+    var tapModule = {
+      size       : 0,
+      iteration  : 0,
+      init() {
+        every(200, function() {
+          this.iteration = (this.iteration+1) % 10;
+          my.pin.digitalWrite(+!!(this.iteration < this.size));
+        });
+      }
+
+    };
+    tapModule.init();
     every((2).seconds(), function() {
       my.bmp180.getAltitude(1, null, function(err, val) {
         if (err) {
           console.log(err);
           return;
         }
-        size = parseInt(val.temp.fromScale(30,33).toScale(0,10));
-        console.log("\tTemperature: " + val.temp + "\titeration:" + size);
+        tapModule.size = parseInt(val.temp.fromScale(30,33).toScale(0,10));
+        console.log("\tTemperature: " + val.temp + "\titeration:" + tapModule.size);
         fs.appendFile(fileName,val.temp + '\n');
       });
     });
