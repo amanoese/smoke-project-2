@@ -1,14 +1,14 @@
 <template>
   <div class="counter-wrapper">
     <div id="chart"></div>
-    <div class="counter">
-      {{ count }}
-    </div>
     <button @click="$store.commit('INCREMENT')">Increment</button>
     <button @click="$store.commit('DECREMENT')">Decrement</button>
     <button @click="$store.dispatch('incrementAsync')">Increment Async</button>
     <button @click="$store.dispatch('autoIncrement')">Auto Increment</button>
     <button @click="$store.dispatch('autoIncrementStop')">Auto Increment Stop</button>
+    <div class="counter">
+      {{ count }}
+    </div>
   </div>
 </template>
 
@@ -19,15 +19,18 @@ import * as modules from 'billboard.js'
 const { bb , d3 } = modules
 
 export default {
+  data (){
+    return {
+      chart : {},
+      temperatureData : []
+    }
+  },
   mounted (){
-    console.log('mounted')
-    console.log({bb})
-    bb.generate({
+    this.chart = bb.generate({
       bindto: '#chart',
       data: {
-        columns: [
-          ['data1', 30, 200, 100, 400, 150, 250],
-          ['data2', 50, 20, 10, 40, 15, 25]
+        columns : [
+          ['temperature'],
         ]
       }
     });
@@ -35,6 +38,17 @@ export default {
   computed: {
     count() {
       return this.$store.state.count
+    },
+    columns() {
+      this.temperatureData = [...this.temperatureData.slice(-10),this.$store.state.count];
+      return [
+        ['temperature',...this.temperatureData]
+      ];
+    }
+  },
+  watch : {
+    columns (columns){
+      this.chart.load({ columns });
     }
   }
 }
