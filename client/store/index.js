@@ -21,12 +21,12 @@ const actions = {
   incrementAsync ({ commit }) {
     setTimeout(() => {
       commit('INCREMENT')
-    }, 200)
+    }, 300)
   },
   autoIncrement({ commit }) {
     intervalId = setInterval(() => {
       commit('INCREMENT')
-    }, 200)
+    }, 300)
   },
   autoIncrementStop({ commit }) {
     clearInterval(intervalId);

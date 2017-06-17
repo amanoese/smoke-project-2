@@ -15,8 +15,7 @@
 <script>
 //import * as d3 from 'd3'
 import '../../node_modules/billboard.js/dist/billboard.css'
-import * as modules from 'billboard.js'
-const { bb , d3 } = modules
+import { bb , d3 } from 'billboard.js'
 
 export default {
   data (){
