@@ -9,6 +9,8 @@ const config = require('./config')
 const LogPlugin = require('./log-plugin')
 
 const app = express()
+const http = require('http').Server(app);
+const io = require('socket.io')(http)
 
 const port = config.port
 webpackConfig.entry.client = [
@@ -49,4 +51,10 @@ app.get('*', (req, res) => {
   })
 })
 
-app.listen(port)
+io.sockets.on('connection', function (socket) {
+  // この中でデータのやり取りを行う
+  console.log('connected');
+});
+
+http.listen(port)
+
