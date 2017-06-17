@@ -55,6 +55,9 @@ io.sockets.on('connection', function (socket) {
   // この中でデータのやり取りを行う
   console.log('connected');
   io.emit('hello','hello,vue.js!')
+  setInterval(function(){
+    io.emit('temperature',parseInt(Math.random() * 10,10))
+  },500);
 });
 
 http.listen(port)

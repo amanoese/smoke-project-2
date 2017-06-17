@@ -8,6 +8,7 @@
     <button @click="$store.dispatch('autoIncrementStop')">Auto Increment Stop</button>
     <br> {{ connect }}
     <br> {{ hello }}
+    <br> {{ temperature }}
     <div class="counter">
       {{ count }}
     </div>
@@ -46,8 +47,12 @@ export default {
     hello () {
       return this.$store.state.hello
     },
+    temperature () {
+      console.log(this.$store.state.temperature)
+      return this.$store.state.temperature
+    },
     columns() {
-      this.temperatureData = [...this.temperatureData.slice(-10),this.$store.state.count];
+      this.temperatureData = [...this.temperatureData.slice(-30),this.$store.state.temperature];
       return [
         ['temperature',...this.temperatureData]
       ];

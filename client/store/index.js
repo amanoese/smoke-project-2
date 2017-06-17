@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const state = {
   count: 0,
   connect : false,
-  hello : ''
+  hello : '',
+  temperature : 0
 }
 
 const mutations = {
@@ -23,6 +24,10 @@ const mutations = {
   SOCKET_HELLO : (state,  status ) => {
     console.log(state,  status)
     state.hello = status
+  },
+  SOCKET_TEMPERATURE : (state,  status ) => {
+    console.log(state)
+    state.temperature =  status
   }
 }
 
