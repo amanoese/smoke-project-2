@@ -54,6 +54,7 @@ app.get('*', (req, res) => {
 io.sockets.on('connection', function (socket) {
   // この中でデータのやり取りを行う
   console.log('connected');
+  io.emit('hello','hello,vue.js!')
 });
 
 http.listen(port)

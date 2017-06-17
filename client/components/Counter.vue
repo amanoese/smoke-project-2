@@ -6,6 +6,8 @@
     <button @click="$store.dispatch('incrementAsync')">Increment Async</button>
     <button @click="$store.dispatch('autoIncrement')">Auto Increment</button>
     <button @click="$store.dispatch('autoIncrementStop')">Auto Increment Stop</button>
+    <br> {{ connect }}
+    <br> {{ hello }}
     <div class="counter">
       {{ count }}
     </div>
@@ -37,6 +39,12 @@ export default {
   computed: {
     count() {
       return this.$store.state.count
+    },
+    connect () {
+      return this.$store.state.connect
+    },
+    hello () {
+      return this.$store.state.hello
     },
     columns() {
       this.temperatureData = [...this.temperatureData.slice(-10),this.$store.state.count];

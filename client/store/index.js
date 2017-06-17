@@ -4,7 +4,9 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  count: 0
+  count: 0,
+  connect : false,
+  hello : ''
 }
 
 const mutations = {
@@ -13,6 +15,14 @@ const mutations = {
   },
   DECREMENT (state) {
     state.count--
+  },
+  SOCKET_CONNECT : (state,  status ) => {
+    console.log(state,  status)
+    state.connect = true;
+  },
+  SOCKET_HELLO : (state,  status ) => {
+    console.log(state,  status)
+    state.hello = status
   }
 }
 
@@ -30,7 +40,7 @@ const actions = {
   },
   autoIncrementStop({ commit }) {
     clearInterval(intervalId);
-  },
+  }
 }
 
 const store = new Vuex.Store({

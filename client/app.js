@@ -3,8 +3,10 @@ import { sync } from 'vuex-router-sync'
 import App from './components/App'
 import router from './router'
 import store from './store'
+
+import socketio from 'socket.io-client';
 import VueSocketio from 'vue-socket.io';
-Vue.use(VueSocketio, 'http://localhost:4000');
+Vue.use(VueSocketio,socketio('http://localhost:4000/'),store);
 
 sync(store, router)
 
