@@ -18,15 +18,12 @@ const mutations = {
     state.count--
   },
   SOCKET_CONNECT : (state,  status ) => {
-    console.log(state,  status)
     state.connect = true;
   },
   SOCKET_HELLO : (state,  status ) => {
-    console.log(state,  status)
     state.hello = status
   },
   SOCKET_TEMPERATURE : (state,  status ) => {
-    console.log(state)
     state.temperature =  status
   }
 }

@@ -24,7 +24,10 @@ export default {
   data (){
     return {
       chart : {},
-      temperatureData : []
+      temperatureData : [],
+      dateList : [],
+      tempData : [],
+      dataSize : 0
     }
   },
   mounted (){
@@ -33,7 +36,10 @@ export default {
       data: {
         columns : [
           ['temperature'],
-        ]
+        ]//,
+        //transition: {
+        //  duration: 0
+        //}
       }
     });
   },
@@ -48,19 +54,26 @@ export default {
       return this.$store.state.hello
     },
     temperature () {
-      console.log(this.$store.state.temperature)
       return this.$store.state.temperature
     },
-    columns() {
-      this.temperatureData = [...this.temperatureData.slice(-30),this.$store.state.temperature];
-      return [
-        ['temperature',...this.temperatureData]
-      ];
+    columns () {
+      this.dataSize += 1;
+      if(this.tempData.length > 2 ){
+        this.tempData = []
+      }
+      this.tempData = [ ...this.tempData,this.$store.state.temperature]
+      return this.tempData;
     }
   },
   watch : {
-    columns (columns){
-      this.chart.load({ columns });
+    columns (tempData){
+      if(tempData.length <= 1 ){ return }
+      this.chart.flow({
+        columns: [
+          ['temperature',...tempData]
+        ],
+        length : this.dataSize <= 10 ? 0: 2
+      })
     }
   }
 }
