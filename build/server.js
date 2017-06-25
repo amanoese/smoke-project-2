@@ -57,7 +57,7 @@ io.sockets.on('connection', function (socket) {
   io.emit('hello','hello,vue.js!')
   clearInterval(id)
   id = setInterval(function(){
-    io.emit('temperature',parseInt(Math.random() * 10,10))
+    io.emit('temperature',+("" + parseInt(Math.random() * 1000,10)).replace(/.$/,'.$&'))
   },1000);
 });
 io.sockets.on('disconnect', function (socket) {
