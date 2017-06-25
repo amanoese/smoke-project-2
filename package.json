@@ -45,6 +45,7 @@
     "billboard.js": "^1.0.0",
     "c3": "^0.4.13",
     "d3": "^4.9.1",
+    "lodash": "^4.17.4",
     "promise-polyfill": "^6.0.2",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",

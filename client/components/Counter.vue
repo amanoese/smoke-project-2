@@ -19,13 +19,13 @@
 //import * as d3 from 'd3'
 import '../../node_modules/billboard.js/dist/billboard.css'
 import { bb , d3 } from 'billboard.js'
+import _ from 'lodash'
 
 export default {
   data (){
     return {
       chart : {},
-      temperatureData : [],
-      dateList : [],
+      temperatureData : _.range(10).map(x=>0),
       dataSize : 0
     }
   },
@@ -34,11 +34,8 @@ export default {
       bindto: '#chart',
       data: {
         columns : [
-          ['temperature'],
-        ]//,
-        //transition: {
-        //  duration: 0
-        //}
+          ['temperature', ...this.temperatureData],
+        ],
       }
     });
   },
@@ -54,18 +51,39 @@ export default {
     },
     temperature () {
       return this.$store.state.temperature
+    },
+    temps (){
+      return this.$store.state.temps
     }
   },
   watch: {
-    '$store.state.temps' (data){
-      this.dataSize += 1;
-
+    temps (data){
       console.log(data)
+      this.temperatureData = [...this.temperatureData, ...data]
+
+      this.chartUpdate(data,()=>{
+        if(this.temperatureData.length < 30){ return }
+        this.temperatureData = this.temperatureData.slice(-10)
+        this.chartClean(this.temperatureData)
+      })
+    }
+  },
+  methods: {
+    chartUpdate (data, callback = _.noop ){
+
       this.chart.flow({
         columns: [
           ['temperature', ...data]
         ],
-        length : this.dataSize <= 10 ? 0: 2
+        length : data.length,
+        done : callback
+      })
+    },
+    chartClean (data){
+      this.chart.load({
+        columns: [
+          ['temperature', ...data]
+        ]
       })
     }
   }
