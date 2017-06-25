@@ -7,15 +7,21 @@ const state = {
   count: 0,
   connect : false,
   hello : '',
+  tempstash : [],
+  temps : [],
   temperature : 0
 }
 
+let temps = [];
 const mutations = {
   INCREMENT (state) {
     state.count++
   },
   DECREMENT (state) {
     state.count--
+  },
+  TEMPS (state,status) {
+    state.temps = status
   },
   SOCKET_CONNECT : (state,  status ) => {
     state.connect = true;
@@ -25,6 +31,12 @@ const mutations = {
   },
   SOCKET_TEMPERATURE : (state,  status ) => {
     state.temperature =  status
+
+    temps = [...temps,status]
+    if(temps.length >= 2 ){
+      store.commit('TEMPS', temps)
+      temps = []
+    }
   }
 }
 

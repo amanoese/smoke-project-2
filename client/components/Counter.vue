@@ -26,7 +26,6 @@ export default {
       chart : {},
       temperatureData : [],
       dateList : [],
-      tempData : [],
       dataSize : 0
     }
   },
@@ -55,22 +54,16 @@ export default {
     },
     temperature () {
       return this.$store.state.temperature
-    },
-    columns () {
-      this.dataSize += 1;
-      if(this.tempData.length > 2 ){
-        this.tempData = []
-      }
-      this.tempData = [ ...this.tempData,this.$store.state.temperature]
-      return this.tempData;
     }
   },
-  watch : {
-    columns (tempData){
-      if(tempData.length <= 1 ){ return }
+  watch: {
+    '$store.state.temps' (data){
+      this.dataSize += 1;
+
+      console.log(data)
       this.chart.flow({
         columns: [
-          ['temperature',...tempData]
+          ['temperature', ...data]
         ],
         length : this.dataSize <= 10 ? 0: 2
       })
