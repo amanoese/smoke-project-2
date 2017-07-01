@@ -1,9 +1,11 @@
 <template>
   <div class="page">
+    <nav class="top-nav">
+      <div class="container">
+        <div class="nav-wrapper">smoke-project-2</div>
+      </div>
+    </nav>
     <counter></counter>
-    <p>
-      To get started, edit files in <code>./client</code> and save.
-    </p>
   </div>
 </template>
 

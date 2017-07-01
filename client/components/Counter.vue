@@ -1,14 +1,20 @@
 <template>
   <div class="counter-wrapper">
-    <div id="chart"></div>
+    <div class="container">
+      <div class="col s3">temperature:{{ temperature }}</div>
+    </div>
+    <div class="container">
+      <div id="chart" class="col s12"></div>
+    </div>
     <button @click="$store.commit('INCREMENT')">Increment</button>
     <button @click="$store.commit('DECREMENT')">Decrement</button>
     <button @click="$store.dispatch('incrementAsync')">Increment Async</button>
     <button @click="$store.dispatch('autoIncrement')">Auto Increment</button>
     <button @click="$store.dispatch('autoIncrementStop')">Auto Increment Stop</button>
+    <v-btn-link @click.native.prevent="$dialog('Toast!')">Toast!</v-btn-link>
     <br> {{ connect }}
     <br> {{ hello }}
-    <br> {{ temperature }}
+    <br> 
     <div class="counter">
       {{ count }}
     </div>
