@@ -1,22 +1,7 @@
 <template>
-  <div class="counter-wrapper">
-    <div class="container">
-      <div class="col s3">temperature:{{ temperature }}</div>
-    </div>
-    <div class="container">
+  <div class="container">
+    <div class="row card-panel">
       <div id="chart" class="col s12"></div>
-    </div>
-    <button @click="$store.commit('INCREMENT')">Increment</button>
-    <button @click="$store.commit('DECREMENT')">Decrement</button>
-    <button @click="$store.dispatch('incrementAsync')">Increment Async</button>
-    <button @click="$store.dispatch('autoIncrement')">Auto Increment</button>
-    <button @click="$store.dispatch('autoIncrementStop')">Auto Increment Stop</button>
-    <v-btn-link @click.native.prevent="$dialog('Toast!')">Toast!</v-btn-link>
-    <br> {{ connect }}
-    <br> {{ hello }}
-    <br> 
-    <div class="counter">
-      {{ count }}
     </div>
   </div>
 </template>
@@ -27,12 +12,14 @@ import '../../node_modules/billboard.js/dist/billboard.css'
 import { bb , d3 } from 'billboard.js'
 import _ from 'lodash'
 
+const graphCache = 30;
+const graphSize = 10;
+
 export default {
   data (){
     return {
       chart : {},
-      temperatureData : _.range(10).map(x=>0),
-      dataSize : 0
+      temperatureData : _.range(10).map(x=>0)
     }
   },
   mounted (){
@@ -42,6 +29,9 @@ export default {
         columns : [
           ['temperature', ...this.temperatureData],
         ],
+      },
+      size : {
+        height : 600
       }
     });
   },
@@ -68,8 +58,8 @@ export default {
       this.temperatureData = [...this.temperatureData, ...data]
 
       this.chartUpdate(data,()=>{
-        if(this.temperatureData.length < 30){ return }
-        this.temperatureData = this.temperatureData.slice(-10)
+        if(this.temperatureData.length < graphCache){ return }
+        this.temperatureData = this.temperatureData.slice(graphSize)
         this.chartClean(this.temperatureData)
       })
     }
@@ -97,15 +87,4 @@ export default {
 </script>
 
 <style>
-.counter {
-  margin: 100px auto;
-  border-radius: 3px;
-  width: 200px;
-  height: 200px;
-  text-align: center;
-  line-height: 200px;
-  font-size: 5rem;
-  background-color: #f0f0f0;
-  user-select: none;
-}
 </style>

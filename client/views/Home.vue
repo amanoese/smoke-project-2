@@ -1,19 +1,17 @@
 <template>
   <div class="page">
-    <nav class="top-nav">
-      <div class="container">
-        <div class="nav-wrapper">smoke-project-2</div>
-      </div>
-    </nav>
+    <header-vue></header-vue>
     <counter></counter>
   </div>
 </template>
 
 <script>
+import HeaderVue from 'components/Header'
 import Counter from 'components/Counter'
 
 export default {
   components: {
+    HeaderVue,
     Counter
   }
 }
