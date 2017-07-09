@@ -1,5 +1,5 @@
 var Cylon = require('cylon');
-var json2csv = require('json2csv');
+//var json2csv = require('json2csv');
 var moment = require('moment');
 var fs = require('fs');
 
@@ -39,10 +39,16 @@ Cylon.robot({
         var data = `${moment().format('hh:mm:ss')},${temp},${tapModule.size}\n`;
         process.stdout.write(data);
         fs.appendFile(fileName,data);
+        this.emmit('SOCKET_TEMPERATURE',temp)
       });
     });
   }
 }).start();
+
+Cylon.api('socketio',{
+  host: 'localhost',
+  port: '4000'
+});
 
 var tapModule = {
   size       : 0,
