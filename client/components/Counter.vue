@@ -30,6 +30,11 @@ export default {
           ['temperature', ...this.temperatureData],
         ],
       },
+      grid: {
+        y: {
+          lines: [{value: 63, text: 'target temperature 63'}]
+        }
+      },
       size : {
         height : 600
       }
